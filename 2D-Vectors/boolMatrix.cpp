@@ -1,33 +1,36 @@
 #include<iostream>
+#include<vector>
 using namespace std;
 
-int main(){
-    int row, col;
-    row = 3; col = 4;
-
-    int arr[row][col];
+int maximum_1_row_type2(vector<vector<int>> &v, int row, int col){
+    // Checking which array will have the 1 at leftmost index
+    
+    int row_num = -1;
+    int num_of_ones = 0; 
 
     for(int i = 0; i < row; i++){
         for(int j = 0; j < col; j++){
-            cin>>arr[i][j];
+            if(v[i][j] == 1){
+                int number_of_ones = col - j;
+                if(number_of_ones > num_of_ones){
+                    num_of_ones = number_of_ones;
+                    row_num = i;
+                }
+            }
         }
     }
 
-    cout<<"Printing the input matrix: "<<endl;
-    // Printing the input array
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < col; j++){
-            cout<<arr[i][j]<<" ";
-        }
-        cout<<endl;
-    }
+    return row_num;
+}
+
+int maximum_1_row(vector<vector<int>> &v, int row, int col){
 
     int row_num; 
     int one_count = 0;
     for(int i = 0; i < row; i++){
         int one_count_in_row = 0;
         for(int j = 0; j < col; j++){
-            if(arr[i][j] == 1){
+            if(v[i][j] == 1){
                 one_count_in_row++;
             }
             if(one_count_in_row >= one_count){
@@ -36,7 +39,35 @@ int main(){
             }
         }
     }
+    return row_num;
+}
 
-    cout<<"Row with maximum 1s is => "<<row_num<<endl;
+int main(){
+    // Given a boolean 2D array, where each row is sorted. Find the row with the maximum number is 1s.
+    int row, col;
+    cout<<"Enter row and column size: ";
+    cin>>row>>col;
+
+    vector<vector<int>> v(row, vector<int>(col));
+
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            cin>>v[i][j];
+        }
+    }
+
+    cout<<"Printing the input matrix: "<<endl;
+    // Printing the input array
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            cout<<v[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    // int row_num = maximum_1_row(v, row, col);
+    int num_of_ones = maximum_1_row_type2(v, row, col);
+
+    cout<<"Row with maximum 1(s) is => "<<num_of_ones<<endl;
     return 0;
 }
